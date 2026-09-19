@@ -1,0 +1,1 @@
+- [External place verification](external-place-verification.md) — Map short links may verify only name and location; keep unverified business facts editable or explicitly pending.

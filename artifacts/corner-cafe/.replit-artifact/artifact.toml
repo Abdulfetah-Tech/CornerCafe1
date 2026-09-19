@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Corner Cafe"
+description = "A polished full-stack website for Corner Cafe in Sheger city, Ethiopia, with a customer-facing menu and story, contact and reservation requests, map directions, and a simple owner content dashboard."
+version = "1.0.0"
+id = "artifacts/corner-cafe"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 19228
+
+[services.development]
+run = "pnpm --filter @workspace/corner-cafe run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/corner-cafe", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/corner-cafe/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19228"
+BASE_PATH = "/"

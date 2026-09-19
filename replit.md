@@ -1,6 +1,6 @@
-# [Project name]
+# Corner Cafe
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+Corner Cafe is a public café website for the verified Sheger city listing, with a live menu, reservation requests, contact requests, story, hours, and directions.
 
 ## Run & Operate
 
@@ -22,23 +22,31 @@ _Replace the heading above with the project's name, and this line with one sente
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/corner-cafe` — customer-facing React + Vite website
+- `artifacts/api-server/src/routes/corner-cafe.ts` — cafe, menu, reservation, and inquiry endpoints
+- `lib/api-spec/openapi.yaml` — source of truth for the generated API client and Zod schemas
+- `lib/db/src/schema/corner-cafe.ts` — PostgreSQL schema for profile, menu, reservations, and inquiries
+- `artifacts/corner-cafe/src/index.css` — visual theme and motion tokens
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- Public café facts that were not verified from the provided map listing remain null or explicitly marked as needing confirmation instead of being invented.
+- Reservations and inquiries are request-based and persist to PostgreSQL; the site does not claim a request is a confirmed booking.
+- The public site uses generated OpenAPI hooks for every backend interaction.
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+- Visitors can learn about Corner Cafe, browse the current menu, request a table, send a message, and open map directions.
+- The menu intentionally supports an empty state until the café's verified menu is entered.
 
 ## User preferences
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
+No additional preferences recorded.
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- Run `pnpm --filter @workspace/api-spec run codegen` after changing `lib/api-spec/openapi.yaml`.
+- Update the profile/menu records with verified café details before publishing customer-facing operating hours or pricing.
 
 ## Pointers
 

@@ -10,6 +10,14 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: cafe
+    description: Public Corner Cafe information
+  - name: menu
+    description: Public cafe menu
+  - name: reservations
+    description: Reservation requests
+  - name: inquiries
+    description: Customer inquiries
 paths:
   /healthz:
     get:
@@ -24,6 +32,80 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /cafe:
+    get:
+      operationId: getCafeProfile
+      tags: [cafe]
+      summary: Get the public cafe profile
+      responses:
+        "200":
+          description: Cafe profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CafeProfile"
+  /menu:
+    get:
+      operationId: listMenuItems
+      tags: [menu]
+      summary: List visible menu items
+      responses:
+        "200":
+          description: Visible menu items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MenuItem"
+  /reservations:
+    post:
+      operationId: createReservation
+      tags: [reservations]
+      summary: Submit a reservation request
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReservationInput"
+      responses:
+        "201":
+          description: Reservation request created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Reservation"
+        "400":
+          description: Invalid reservation request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /inquiries:
+    post:
+      operationId: createInquiry
+      tags: [inquiries]
+      summary: Send a message to the cafe
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InquiryInput"
+      responses:
+        "201":
+          description: Inquiry created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Inquiry"
+        "400":
+          description: Invalid inquiry
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 components:
   schemas:
     HealthStatus:
@@ -33,4 +115,138 @@ components:
           type: string
       required:
         - status
+    CafeHour:
+      type: object
+      properties:
+        day:
+          type: string
+        hours:
+          type: string
+      required: [day, hours]
+    CafeProfile:
+      type: object
+      properties:
+        name:
+          type: string
+        tagline:
+          type: string
+        description:
+          type: string
+        address:
+          type: string
+        mapUrl:
+          type: string
+          format: uri
+        phone:
+          type: ["string", "null"]
+        email:
+          type: ["string", "null"]
+        instagramUrl:
+          type: ["string", "null"]
+        hours:
+          type: array
+          items:
+            $ref: "#/components/schemas/CafeHour"
+      required:
+        - name
+        - tagline
+        - description
+        - address
+        - mapUrl
+        - phone
+        - email
+        - instagramUrl
+        - hours
+    MenuItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        category:
+          type: string
+        price:
+          type: number
+          format: double
+        currency:
+          type: string
+        featured:
+          type: boolean
+      required: [id, name, description, category, price, currency, featured]
+    ReservationInput:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 2
+        phone:
+          type: string
+          minLength: 6
+        email:
+          type: ["string", "null"]
+          format: email
+        date:
+          type: string
+          format: date
+        time:
+          type: string
+          minLength: 3
+        partySize:
+          type: integer
+          minimum: 1
+          maximum: 20
+        notes:
+          type: ["string", "null"]
+      required: [name, phone, date, time, partySize]
+    Reservation:
+      allOf:
+        - $ref: "#/components/schemas/ReservationInput"
+        - type: object
+          properties:
+            id:
+              type: integer
+            status:
+              type: string
+            createdAt:
+              type: string
+              format: date-time
+          required: [id, status, createdAt]
+    InquiryInput:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 2
+        email:
+          type: string
+          format: email
+        subject:
+          type: string
+          minLength: 2
+        message:
+          type: string
+          minLength: 5
+      required: [name, email, subject, message]
+    Inquiry:
+      allOf:
+        - $ref: "#/components/schemas/InquiryInput"
+        - type: object
+          properties:
+            id:
+              type: integer
+            status:
+              type: string
+            createdAt:
+              type: string
+              format: date-time
+          required: [id, status, createdAt]
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required: [error]
 
