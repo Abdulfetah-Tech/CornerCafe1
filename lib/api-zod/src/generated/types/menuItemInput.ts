@@ -5,16 +5,20 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
-import type { MenuItemStatus } from './menuItemStatus';
+import type { MenuItemInputStatus } from './menuItemInputStatus';
 
-export interface MenuItem {
-  id: number;
+export interface MenuItemInput {
+  /** @minLength 2 */
   name: string;
+  /** @minLength 2 */
   description: string;
+  /** @minLength 2 */
   category: string;
+  /** @minimum 0 */
   price: number;
+  /** @minLength 1 */
   currency: string;
   featured: boolean;
-  status: MenuItemStatus;
+  status: MenuItemInputStatus;
   dietaryLabels: string[];
 }

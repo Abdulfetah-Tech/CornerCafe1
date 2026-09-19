@@ -46,7 +46,9 @@ export const ListMenuItemsResponseItem = zod.object({
   "category": zod.string(),
   "price": zod.number(),
   "currency": zod.string(),
-  "featured": zod.boolean()
+  "featured": zod.boolean(),
+  "status": zod.enum(['draft', 'published', 'unavailable']),
+  "dietaryLabels": zod.array(zod.string())
 })
 export const ListMenuItemsResponse = zod.array(ListMenuItemsResponseItem)
 
@@ -130,6 +132,288 @@ export const CreateInquiryResponse = zod.object({
   "email": zod.string().email(),
   "subject": zod.string().min(createInquiryResponseOneSubjectMin),
   "message": zod.string().min(createInquiryResponseOneMessageMin)
+}).and(zod.object({
+  "id": zod.number().int(),
+  "status": zod.string(),
+  "createdAt": zod.coerce.date()
+}))
+
+
+/**
+ * @summary Get the owner dashboard summary
+ */
+export const GetOwnerSummaryResponse = zod.object({
+  "pendingReservations": zod.number().int(),
+  "newInquiries": zod.number().int(),
+  "publishedMenuItems": zod.number().int(),
+  "totalMenuItems": zod.number().int()
+})
+
+
+/**
+ * @summary Update the public cafe profile
+ */
+export const updateOwnerCafeProfileBodyNameMin = 2;
+
+export const updateOwnerCafeProfileBodyTaglineMin = 2;
+
+export const updateOwnerCafeProfileBodyDescriptionMin = 2;
+
+export const updateOwnerCafeProfileBodyAddressMin = 2;
+
+
+
+export const UpdateOwnerCafeProfileBody = zod.object({
+  "name": zod.string().min(updateOwnerCafeProfileBodyNameMin),
+  "tagline": zod.string().min(updateOwnerCafeProfileBodyTaglineMin),
+  "description": zod.string().min(updateOwnerCafeProfileBodyDescriptionMin),
+  "address": zod.string().min(updateOwnerCafeProfileBodyAddressMin),
+  "mapUrl": zod.string().url(),
+  "phone": zod.string().nullable(),
+  "email": zod.string().email().nullable(),
+  "instagramUrl": zod.string().url().nullable(),
+  "hours": zod.array(zod.object({
+  "day": zod.string(),
+  "hours": zod.string()
+}))
+})
+
+export const UpdateOwnerCafeProfileResponse = zod.object({
+  "name": zod.string(),
+  "tagline": zod.string(),
+  "description": zod.string(),
+  "address": zod.string(),
+  "mapUrl": zod.string().url(),
+  "phone": zod.string().nullable(),
+  "email": zod.string().nullable(),
+  "instagramUrl": zod.string().nullable(),
+  "hours": zod.array(zod.object({
+  "day": zod.string(),
+  "hours": zod.string()
+}))
+})
+
+
+/**
+ * @summary List all menu items for the owner
+ */
+export const ListOwnerMenuItemsResponseItem = zod.object({
+  "id": zod.number().int(),
+  "name": zod.string(),
+  "description": zod.string(),
+  "category": zod.string(),
+  "price": zod.number(),
+  "currency": zod.string(),
+  "featured": zod.boolean(),
+  "status": zod.enum(['draft', 'published', 'unavailable']),
+  "dietaryLabels": zod.array(zod.string())
+})
+export const ListOwnerMenuItemsResponse = zod.array(ListOwnerMenuItemsResponseItem)
+
+
+/**
+ * @summary Create a menu item
+ */
+export const createOwnerMenuItemBodyNameMin = 2;
+
+export const createOwnerMenuItemBodyDescriptionMin = 2;
+
+export const createOwnerMenuItemBodyCategoryMin = 2;
+
+export const createOwnerMenuItemBodyPriceMin = 0;
+
+
+
+
+export const CreateOwnerMenuItemBody = zod.object({
+  "name": zod.string().min(createOwnerMenuItemBodyNameMin),
+  "description": zod.string().min(createOwnerMenuItemBodyDescriptionMin),
+  "category": zod.string().min(createOwnerMenuItemBodyCategoryMin),
+  "price": zod.number().min(createOwnerMenuItemBodyPriceMin),
+  "currency": zod.string().min(1),
+  "featured": zod.boolean(),
+  "status": zod.enum(['draft', 'published', 'unavailable']),
+  "dietaryLabels": zod.array(zod.string())
+})
+
+export const CreateOwnerMenuItemResponse = zod.object({
+  "id": zod.number().int(),
+  "name": zod.string(),
+  "description": zod.string(),
+  "category": zod.string(),
+  "price": zod.number(),
+  "currency": zod.string(),
+  "featured": zod.boolean(),
+  "status": zod.enum(['draft', 'published', 'unavailable']),
+  "dietaryLabels": zod.array(zod.string())
+})
+
+
+/**
+ * @summary Update a menu item
+ */
+export const UpdateOwnerMenuItemParams = zod.object({
+  "id": zod.coerce.number().int()
+})
+
+export const updateOwnerMenuItemBodyOneNameMin = 2;
+
+export const updateOwnerMenuItemBodyOneDescriptionMin = 2;
+
+export const updateOwnerMenuItemBodyOneCategoryMin = 2;
+
+export const updateOwnerMenuItemBodyOnePriceMin = 0;
+
+
+
+
+export const UpdateOwnerMenuItemBody = zod.object({
+  "name": zod.string().min(updateOwnerMenuItemBodyOneNameMin),
+  "description": zod.string().min(updateOwnerMenuItemBodyOneDescriptionMin),
+  "category": zod.string().min(updateOwnerMenuItemBodyOneCategoryMin),
+  "price": zod.number().min(updateOwnerMenuItemBodyOnePriceMin),
+  "currency": zod.string().min(1),
+  "featured": zod.boolean(),
+  "status": zod.enum(['draft', 'published', 'unavailable']),
+  "dietaryLabels": zod.array(zod.string())
+})
+
+export const UpdateOwnerMenuItemResponse = zod.object({
+  "id": zod.number().int(),
+  "name": zod.string(),
+  "description": zod.string(),
+  "category": zod.string(),
+  "price": zod.number(),
+  "currency": zod.string(),
+  "featured": zod.boolean(),
+  "status": zod.enum(['draft', 'published', 'unavailable']),
+  "dietaryLabels": zod.array(zod.string())
+})
+
+
+/**
+ * @summary Delete a menu item
+ */
+export const DeleteOwnerMenuItemParams = zod.object({
+  "id": zod.coerce.number().int()
+})
+
+export const DeleteOwnerMenuItemResponse = zod.void()
+
+
+/**
+ * @summary List reservation requests
+ */
+export const listOwnerReservationsResponseOneNameMin = 2;
+
+export const listOwnerReservationsResponseOnePhoneMin = 6;
+
+export const listOwnerReservationsResponseOneTimeMin = 3;
+
+export const listOwnerReservationsResponseOnePartySizeMax = 20;
+
+
+
+export const ListOwnerReservationsResponseItem = zod.object({
+  "name": zod.string().min(listOwnerReservationsResponseOneNameMin),
+  "phone": zod.string().min(listOwnerReservationsResponseOnePhoneMin),
+  "email": zod.string().email().nullish(),
+  "date": zod.coerce.date(),
+  "time": zod.string().min(listOwnerReservationsResponseOneTimeMin),
+  "partySize": zod.number().int().min(1).max(listOwnerReservationsResponseOnePartySizeMax),
+  "notes": zod.string().nullish()
+}).and(zod.object({
+  "id": zod.number().int(),
+  "status": zod.string(),
+  "createdAt": zod.coerce.date()
+}))
+export const ListOwnerReservationsResponse = zod.array(ListOwnerReservationsResponseItem)
+
+
+/**
+ * @summary Update a reservation request status
+ */
+export const UpdateOwnerReservationParams = zod.object({
+  "id": zod.coerce.number().int()
+})
+
+export const UpdateOwnerReservationBody = zod.object({
+  "status": zod.enum(['pending', 'confirmed', 'declined', 'completed'])
+})
+
+export const updateOwnerReservationResponseOneNameMin = 2;
+
+export const updateOwnerReservationResponseOnePhoneMin = 6;
+
+export const updateOwnerReservationResponseOneTimeMin = 3;
+
+export const updateOwnerReservationResponseOnePartySizeMax = 20;
+
+
+
+export const UpdateOwnerReservationResponse = zod.object({
+  "name": zod.string().min(updateOwnerReservationResponseOneNameMin),
+  "phone": zod.string().min(updateOwnerReservationResponseOnePhoneMin),
+  "email": zod.string().email().nullish(),
+  "date": zod.coerce.date(),
+  "time": zod.string().min(updateOwnerReservationResponseOneTimeMin),
+  "partySize": zod.number().int().min(1).max(updateOwnerReservationResponseOnePartySizeMax),
+  "notes": zod.string().nullish()
+}).and(zod.object({
+  "id": zod.number().int(),
+  "status": zod.string(),
+  "createdAt": zod.coerce.date()
+}))
+
+
+/**
+ * @summary List customer inquiries
+ */
+export const listOwnerInquiriesResponseOneNameMin = 2;
+
+export const listOwnerInquiriesResponseOneSubjectMin = 2;
+
+export const listOwnerInquiriesResponseOneMessageMin = 5;
+
+
+
+export const ListOwnerInquiriesResponseItem = zod.object({
+  "name": zod.string().min(listOwnerInquiriesResponseOneNameMin),
+  "email": zod.string().email(),
+  "subject": zod.string().min(listOwnerInquiriesResponseOneSubjectMin),
+  "message": zod.string().min(listOwnerInquiriesResponseOneMessageMin)
+}).and(zod.object({
+  "id": zod.number().int(),
+  "status": zod.string(),
+  "createdAt": zod.coerce.date()
+}))
+export const ListOwnerInquiriesResponse = zod.array(ListOwnerInquiriesResponseItem)
+
+
+/**
+ * @summary Update an inquiry status
+ */
+export const UpdateOwnerInquiryParams = zod.object({
+  "id": zod.coerce.number().int()
+})
+
+export const UpdateOwnerInquiryBody = zod.object({
+  "status": zod.enum(['new', 'read', 'archived'])
+})
+
+export const updateOwnerInquiryResponseOneNameMin = 2;
+
+export const updateOwnerInquiryResponseOneSubjectMin = 2;
+
+export const updateOwnerInquiryResponseOneMessageMin = 5;
+
+
+
+export const UpdateOwnerInquiryResponse = zod.object({
+  "name": zod.string().min(updateOwnerInquiryResponseOneNameMin),
+  "email": zod.string().email(),
+  "subject": zod.string().min(updateOwnerInquiryResponseOneSubjectMin),
+  "message": zod.string().min(updateOwnerInquiryResponseOneMessageMin)
 }).and(zod.object({
   "id": zod.number().int(),
   "status": zod.string(),

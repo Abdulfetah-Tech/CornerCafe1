@@ -18,6 +18,8 @@ tags:
     description: Reservation requests
   - name: inquiries
     description: Customer inquiries
+  - name: owner
+    description: Protected owner dashboard operations
 paths:
   /healthz:
     get:
@@ -106,7 +108,172 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+  /owner/summary:
+    get:
+      operationId: getOwnerSummary
+      tags: [owner]
+      summary: Get the owner dashboard summary
+      responses:
+        "200":
+          description: Dashboard summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OwnerSummary"
+  /owner/cafe:
+    patch:
+      operationId: updateOwnerCafeProfile
+      tags: [owner]
+      summary: Update the public cafe profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CafeProfileInput"
+      responses:
+        "200":
+          description: Updated cafe profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CafeProfile"
+  /owner/menu:
+    get:
+      operationId: listOwnerMenuItems
+      tags: [owner]
+      summary: List all menu items for the owner
+      responses:
+        "200":
+          description: All menu items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MenuItem"
+    post:
+      operationId: createOwnerMenuItem
+      tags: [owner]
+      summary: Create a menu item
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MenuItemInput"
+      responses:
+        "201":
+          description: Created menu item
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MenuItem"
+  /owner/menu/{id}:
+    patch:
+      operationId: updateOwnerMenuItem
+      tags: [owner]
+      summary: Update a menu item
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MenuItemUpdate"
+      responses:
+        "200":
+          description: Updated menu item
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MenuItem"
+    delete:
+      operationId: deleteOwnerMenuItem
+      tags: [owner]
+      summary: Delete a menu item
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      responses:
+        "204":
+          description: Menu item deleted
+  /owner/reservations:
+    get:
+      operationId: listOwnerReservations
+      tags: [owner]
+      summary: List reservation requests
+      responses:
+        "200":
+          description: Reservation requests
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Reservation"
+  /owner/reservations/{id}:
+    patch:
+      operationId: updateOwnerReservation
+      tags: [owner]
+      summary: Update a reservation request status
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReservationStatusUpdate"
+      responses:
+        "200":
+          description: Updated reservation request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Reservation"
+  /owner/inquiries:
+    get:
+      operationId: listOwnerInquiries
+      tags: [owner]
+      summary: List customer inquiries
+      responses:
+        "200":
+          description: Customer inquiries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Inquiry"
+  /owner/inquiries/{id}:
+    patch:
+      operationId: updateOwnerInquiry
+      tags: [owner]
+      summary: Update an inquiry status
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InquiryStatusUpdate"
+      responses:
+        "200":
+          description: Updated inquiry
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Inquiry"
 components:
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
   schemas:
     HealthStatus:
       type: object
@@ -175,7 +342,76 @@ components:
           type: string
         featured:
           type: boolean
-      required: [id, name, description, category, price, currency, featured]
+        status:
+          type: string
+          enum: [draft, published, unavailable]
+        dietaryLabels:
+          type: array
+          items:
+            type: string
+      required: [id, name, description, category, price, currency, featured, status, dietaryLabels]
+    CafeProfileInput:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 2
+        tagline:
+          type: string
+          minLength: 2
+        description:
+          type: string
+          minLength: 2
+        address:
+          type: string
+          minLength: 2
+        mapUrl:
+          type: string
+          format: uri
+        phone:
+          type: ["string", "null"]
+        email:
+          type: ["string", "null"]
+          format: email
+        instagramUrl:
+          type: ["string", "null"]
+          format: uri
+        hours:
+          type: array
+          items:
+            $ref: "#/components/schemas/CafeHour"
+      required: [name, tagline, description, address, mapUrl, phone, email, instagramUrl, hours]
+    MenuItemInput:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 2
+        description:
+          type: string
+          minLength: 2
+        category:
+          type: string
+          minLength: 2
+        price:
+          type: number
+          minimum: 0
+        currency:
+          type: string
+          minLength: 1
+        featured:
+          type: boolean
+        status:
+          type: string
+          enum: [draft, published, unavailable]
+        dietaryLabels:
+          type: array
+          items:
+            type: string
+      required: [name, description, category, price, currency, featured, status, dietaryLabels]
+    MenuItemUpdate:
+      allOf:
+        - $ref: "#/components/schemas/MenuItemInput"
     ReservationInput:
       type: object
       properties:
@@ -243,6 +479,32 @@ components:
               type: string
               format: date-time
           required: [id, status, createdAt]
+    ReservationStatusUpdate:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [pending, confirmed, declined, completed]
+      required: [status]
+    InquiryStatusUpdate:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [new, read, archived]
+      required: [status]
+    OwnerSummary:
+      type: object
+      properties:
+        pendingReservations:
+          type: integer
+        newInquiries:
+          type: integer
+        publishedMenuItems:
+          type: integer
+        totalMenuItems:
+          type: integer
+      required: [pendingReservations, newInquiries, publishedMenuItems, totalMenuItems]
     ErrorResponse:
       type: object
       properties:

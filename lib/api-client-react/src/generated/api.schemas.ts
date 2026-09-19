@@ -29,6 +29,15 @@ export interface CafeProfile {
   hours: CafeHour[];
 }
 
+export type MenuItemStatus = typeof MenuItemStatus[keyof typeof MenuItemStatus];
+
+
+export const MenuItemStatus = {
+  draft: 'draft',
+  published: 'published',
+  unavailable: 'unavailable',
+} as const;
+
 export interface MenuItem {
   id: number;
   name: string;
@@ -37,7 +46,55 @@ export interface MenuItem {
   price: number;
   currency: string;
   featured: boolean;
+  status: MenuItemStatus;
+  dietaryLabels: string[];
 }
+
+export interface CafeProfileInput {
+  /** @minLength 2 */
+  name: string;
+  /** @minLength 2 */
+  tagline: string;
+  /** @minLength 2 */
+  description: string;
+  /** @minLength 2 */
+  address: string;
+  mapUrl: string;
+  /** @nullable */
+  phone: string | null;
+  /** @nullable */
+  email: string | null;
+  /** @nullable */
+  instagramUrl: string | null;
+  hours: CafeHour[];
+}
+
+export type MenuItemInputStatus = typeof MenuItemInputStatus[keyof typeof MenuItemInputStatus];
+
+
+export const MenuItemInputStatus = {
+  draft: 'draft',
+  published: 'published',
+  unavailable: 'unavailable',
+} as const;
+
+export interface MenuItemInput {
+  /** @minLength 2 */
+  name: string;
+  /** @minLength 2 */
+  description: string;
+  /** @minLength 2 */
+  category: string;
+  /** @minimum 0 */
+  price: number;
+  /** @minLength 1 */
+  currency: string;
+  featured: boolean;
+  status: MenuItemInputStatus;
+  dietaryLabels: string[];
+}
+
+export type MenuItemUpdate = MenuItemInput;
 
 export interface ReservationInput {
   /** @minLength 2 */
@@ -79,6 +136,40 @@ export type Inquiry = InquiryInput & {
   status: string;
   createdAt: string;
 };
+
+export type ReservationStatusUpdateStatus = typeof ReservationStatusUpdateStatus[keyof typeof ReservationStatusUpdateStatus];
+
+
+export const ReservationStatusUpdateStatus = {
+  pending: 'pending',
+  confirmed: 'confirmed',
+  declined: 'declined',
+  completed: 'completed',
+} as const;
+
+export interface ReservationStatusUpdate {
+  status: ReservationStatusUpdateStatus;
+}
+
+export type InquiryStatusUpdateStatus = typeof InquiryStatusUpdateStatus[keyof typeof InquiryStatusUpdateStatus];
+
+
+export const InquiryStatusUpdateStatus = {
+  new: 'new',
+  read: 'read',
+  archived: 'archived',
+} as const;
+
+export interface InquiryStatusUpdate {
+  status: InquiryStatusUpdateStatus;
+}
+
+export interface OwnerSummary {
+  pendingReservations: number;
+  newInquiries: number;
+  publishedMenuItems: number;
+  totalMenuItems: number;
+}
 
 export interface ErrorResponse {
   error: string;

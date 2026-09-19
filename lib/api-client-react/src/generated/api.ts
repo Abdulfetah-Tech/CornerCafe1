@@ -21,13 +21,19 @@ import type {
 
 import type {
   CafeProfile,
+  CafeProfileInput,
   ErrorResponse,
   HealthStatus,
   Inquiry,
   InquiryInput,
+  InquiryStatusUpdate,
   MenuItem,
+  MenuItemInput,
+  MenuItemUpdate,
+  OwnerSummary,
   Reservation,
-  ReservationInput
+  ReservationInput,
+  ReservationStatusUpdate
 } from './api.schemas';
 
 import { customFetch } from '../custom-fetch';
@@ -463,5 +469,830 @@ export const useCreateInquiry = <TError = ErrorType<ErrorResponse>,
         TContext
       > => {
       return useMutation(getCreateInquiryMutationOptions(options));
+    }
+
+export const getGetOwnerSummaryUrl = () => {
+
+
+
+
+  return `/api/owner/summary`
+}
+
+/**
+ * @summary Get the owner dashboard summary
+ */
+export const getOwnerSummary = async ( options?: Parameters<typeof customFetch>[1]): Promise<OwnerSummary> => {
+
+  return customFetch<OwnerSummary>(getGetOwnerSummaryUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetOwnerSummaryQueryKey = () => {
+    return [
+    `/api/owner/summary`
+    ] as const;
+    }
+
+
+export const getGetOwnerSummaryQueryOptions = <TData = Awaited<ReturnType<typeof getOwnerSummary>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getOwnerSummary>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetOwnerSummaryQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getOwnerSummary>>> = ({ signal }) => getOwnerSummary({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getOwnerSummary>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetOwnerSummaryQueryResult = NonNullable<Awaited<ReturnType<typeof getOwnerSummary>>>
+export type GetOwnerSummaryQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Get the owner dashboard summary
+ */
+
+export function useGetOwnerSummary<TData = Awaited<ReturnType<typeof getOwnerSummary>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getOwnerSummary>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetOwnerSummaryQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getUpdateOwnerCafeProfileUrl = () => {
+
+
+
+
+  return `/api/owner/cafe`
+}
+
+/**
+ * @summary Update the public cafe profile
+ */
+export const updateOwnerCafeProfile = async (cafeProfileInput: CafeProfileInput, options?: Parameters<typeof customFetch>[1]): Promise<CafeProfile> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<CafeProfile>(getUpdateOwnerCafeProfileUrl(),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(cafeProfileInput)
+  }
+);}
+
+
+
+
+
+export const getUpdateOwnerCafeProfileMutationKey = () => ['updateOwnerCafeProfile'] as const;
+
+export const getUpdateOwnerCafeProfileMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateOwnerCafeProfile>>, TError,UpdateOwnerCafeProfileMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateOwnerCafeProfile>>, TError,UpdateOwnerCafeProfileMutationVariables, TContext> => {
+
+const mutationKey = getUpdateOwnerCafeProfileMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateOwnerCafeProfile>>, UpdateOwnerCafeProfileMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  updateOwnerCafeProfile(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateOwnerCafeProfileMutationResult = NonNullable<Awaited<ReturnType<typeof updateOwnerCafeProfile>>>
+    export type UpdateOwnerCafeProfileMutationBody = BodyType<CafeProfileInput>
+    export type UpdateOwnerCafeProfileMutationError = ErrorType<unknown>
+    export type UpdateOwnerCafeProfileMutationVariables = {data: BodyType<CafeProfileInput>}
+
+    /**
+ * @summary Update the public cafe profile
+ */
+export const useUpdateOwnerCafeProfile = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateOwnerCafeProfile>>, TError,UpdateOwnerCafeProfileMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateOwnerCafeProfile>>,
+        TError,
+        UpdateOwnerCafeProfileMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateOwnerCafeProfileMutationOptions(options));
+    }
+
+export const getListOwnerMenuItemsUrl = () => {
+
+
+
+
+  return `/api/owner/menu`
+}
+
+/**
+ * @summary List all menu items for the owner
+ */
+export const listOwnerMenuItems = async ( options?: Parameters<typeof customFetch>[1]): Promise<MenuItem[]> => {
+
+  return customFetch<MenuItem[]>(getListOwnerMenuItemsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListOwnerMenuItemsQueryKey = () => {
+    return [
+    `/api/owner/menu`
+    ] as const;
+    }
+
+
+export const getListOwnerMenuItemsQueryOptions = <TData = Awaited<ReturnType<typeof listOwnerMenuItems>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listOwnerMenuItems>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListOwnerMenuItemsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listOwnerMenuItems>>> = ({ signal }) => listOwnerMenuItems({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listOwnerMenuItems>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListOwnerMenuItemsQueryResult = NonNullable<Awaited<ReturnType<typeof listOwnerMenuItems>>>
+export type ListOwnerMenuItemsQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary List all menu items for the owner
+ */
+
+export function useListOwnerMenuItems<TData = Awaited<ReturnType<typeof listOwnerMenuItems>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listOwnerMenuItems>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListOwnerMenuItemsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getCreateOwnerMenuItemUrl = () => {
+
+
+
+
+  return `/api/owner/menu`
+}
+
+/**
+ * @summary Create a menu item
+ */
+export const createOwnerMenuItem = async (menuItemInput: MenuItemInput, options?: Parameters<typeof customFetch>[1]): Promise<MenuItem> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<MenuItem>(getCreateOwnerMenuItemUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(menuItemInput)
+  }
+);}
+
+
+
+
+
+export const getCreateOwnerMenuItemMutationKey = () => ['createOwnerMenuItem'] as const;
+
+export const getCreateOwnerMenuItemMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createOwnerMenuItem>>, TError,CreateOwnerMenuItemMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createOwnerMenuItem>>, TError,CreateOwnerMenuItemMutationVariables, TContext> => {
+
+const mutationKey = getCreateOwnerMenuItemMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createOwnerMenuItem>>, CreateOwnerMenuItemMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  createOwnerMenuItem(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateOwnerMenuItemMutationResult = NonNullable<Awaited<ReturnType<typeof createOwnerMenuItem>>>
+    export type CreateOwnerMenuItemMutationBody = BodyType<MenuItemInput>
+    export type CreateOwnerMenuItemMutationError = ErrorType<unknown>
+    export type CreateOwnerMenuItemMutationVariables = {data: BodyType<MenuItemInput>}
+
+    /**
+ * @summary Create a menu item
+ */
+export const useCreateOwnerMenuItem = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createOwnerMenuItem>>, TError,CreateOwnerMenuItemMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createOwnerMenuItem>>,
+        TError,
+        CreateOwnerMenuItemMutationVariables,
+        TContext
+      > => {
+      return useMutation(getCreateOwnerMenuItemMutationOptions(options));
+    }
+
+export const getUpdateOwnerMenuItemUrl = (id: number,) => {
+
+
+
+
+  return `/api/owner/menu/${id}`
+}
+
+/**
+ * @summary Update a menu item
+ */
+export const updateOwnerMenuItem = async (id: number,
+    menuItemUpdate: MenuItemUpdate, options?: Parameters<typeof customFetch>[1]): Promise<MenuItem> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<MenuItem>(getUpdateOwnerMenuItemUrl(id),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(menuItemUpdate)
+  }
+);}
+
+
+
+
+
+export const getUpdateOwnerMenuItemMutationKey = () => ['updateOwnerMenuItem'] as const;
+
+export const getUpdateOwnerMenuItemMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateOwnerMenuItem>>, TError,UpdateOwnerMenuItemMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateOwnerMenuItem>>, TError,UpdateOwnerMenuItemMutationVariables, TContext> => {
+
+const mutationKey = getUpdateOwnerMenuItemMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateOwnerMenuItem>>, UpdateOwnerMenuItemMutationVariables> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  updateOwnerMenuItem(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateOwnerMenuItemMutationResult = NonNullable<Awaited<ReturnType<typeof updateOwnerMenuItem>>>
+    export type UpdateOwnerMenuItemMutationBody = BodyType<MenuItemUpdate>
+    export type UpdateOwnerMenuItemMutationError = ErrorType<unknown>
+    export type UpdateOwnerMenuItemMutationVariables = {id: number;data: BodyType<MenuItemUpdate>}
+
+    /**
+ * @summary Update a menu item
+ */
+export const useUpdateOwnerMenuItem = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateOwnerMenuItem>>, TError,UpdateOwnerMenuItemMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateOwnerMenuItem>>,
+        TError,
+        UpdateOwnerMenuItemMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateOwnerMenuItemMutationOptions(options));
+    }
+
+export const getDeleteOwnerMenuItemUrl = (id: number,) => {
+
+
+
+
+  return `/api/owner/menu/${id}`
+}
+
+/**
+ * @summary Delete a menu item
+ */
+export const deleteOwnerMenuItem = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<void> => {
+
+  return customFetch<void>(getDeleteOwnerMenuItemUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+
+export const getDeleteOwnerMenuItemMutationKey = () => ['deleteOwnerMenuItem'] as const;
+
+export const getDeleteOwnerMenuItemMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteOwnerMenuItem>>, TError,DeleteOwnerMenuItemMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteOwnerMenuItem>>, TError,DeleteOwnerMenuItemMutationVariables, TContext> => {
+
+const mutationKey = getDeleteOwnerMenuItemMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteOwnerMenuItem>>, DeleteOwnerMenuItemMutationVariables> = (props) => {
+          const {id} = props ?? {};
+
+          return  deleteOwnerMenuItem(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteOwnerMenuItemMutationResult = NonNullable<Awaited<ReturnType<typeof deleteOwnerMenuItem>>>
+
+    export type DeleteOwnerMenuItemMutationError = ErrorType<unknown>
+    export type DeleteOwnerMenuItemMutationVariables = {id: number}
+
+    /**
+ * @summary Delete a menu item
+ */
+export const useDeleteOwnerMenuItem = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteOwnerMenuItem>>, TError,DeleteOwnerMenuItemMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof deleteOwnerMenuItem>>,
+        TError,
+        DeleteOwnerMenuItemMutationVariables,
+        TContext
+      > => {
+      return useMutation(getDeleteOwnerMenuItemMutationOptions(options));
+    }
+
+export const getListOwnerReservationsUrl = () => {
+
+
+
+
+  return `/api/owner/reservations`
+}
+
+/**
+ * @summary List reservation requests
+ */
+export const listOwnerReservations = async ( options?: Parameters<typeof customFetch>[1]): Promise<Reservation[]> => {
+
+  return customFetch<Reservation[]>(getListOwnerReservationsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListOwnerReservationsQueryKey = () => {
+    return [
+    `/api/owner/reservations`
+    ] as const;
+    }
+
+
+export const getListOwnerReservationsQueryOptions = <TData = Awaited<ReturnType<typeof listOwnerReservations>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listOwnerReservations>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListOwnerReservationsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listOwnerReservations>>> = ({ signal }) => listOwnerReservations({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listOwnerReservations>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListOwnerReservationsQueryResult = NonNullable<Awaited<ReturnType<typeof listOwnerReservations>>>
+export type ListOwnerReservationsQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary List reservation requests
+ */
+
+export function useListOwnerReservations<TData = Awaited<ReturnType<typeof listOwnerReservations>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listOwnerReservations>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListOwnerReservationsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getUpdateOwnerReservationUrl = (id: number,) => {
+
+
+
+
+  return `/api/owner/reservations/${id}`
+}
+
+/**
+ * @summary Update a reservation request status
+ */
+export const updateOwnerReservation = async (id: number,
+    reservationStatusUpdate: ReservationStatusUpdate, options?: Parameters<typeof customFetch>[1]): Promise<Reservation> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<Reservation>(getUpdateOwnerReservationUrl(id),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(reservationStatusUpdate)
+  }
+);}
+
+
+
+
+
+export const getUpdateOwnerReservationMutationKey = () => ['updateOwnerReservation'] as const;
+
+export const getUpdateOwnerReservationMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateOwnerReservation>>, TError,UpdateOwnerReservationMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateOwnerReservation>>, TError,UpdateOwnerReservationMutationVariables, TContext> => {
+
+const mutationKey = getUpdateOwnerReservationMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateOwnerReservation>>, UpdateOwnerReservationMutationVariables> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  updateOwnerReservation(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateOwnerReservationMutationResult = NonNullable<Awaited<ReturnType<typeof updateOwnerReservation>>>
+    export type UpdateOwnerReservationMutationBody = BodyType<ReservationStatusUpdate>
+    export type UpdateOwnerReservationMutationError = ErrorType<unknown>
+    export type UpdateOwnerReservationMutationVariables = {id: number;data: BodyType<ReservationStatusUpdate>}
+
+    /**
+ * @summary Update a reservation request status
+ */
+export const useUpdateOwnerReservation = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateOwnerReservation>>, TError,UpdateOwnerReservationMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateOwnerReservation>>,
+        TError,
+        UpdateOwnerReservationMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateOwnerReservationMutationOptions(options));
+    }
+
+export const getListOwnerInquiriesUrl = () => {
+
+
+
+
+  return `/api/owner/inquiries`
+}
+
+/**
+ * @summary List customer inquiries
+ */
+export const listOwnerInquiries = async ( options?: Parameters<typeof customFetch>[1]): Promise<Inquiry[]> => {
+
+  return customFetch<Inquiry[]>(getListOwnerInquiriesUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListOwnerInquiriesQueryKey = () => {
+    return [
+    `/api/owner/inquiries`
+    ] as const;
+    }
+
+
+export const getListOwnerInquiriesQueryOptions = <TData = Awaited<ReturnType<typeof listOwnerInquiries>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listOwnerInquiries>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListOwnerInquiriesQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listOwnerInquiries>>> = ({ signal }) => listOwnerInquiries({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listOwnerInquiries>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListOwnerInquiriesQueryResult = NonNullable<Awaited<ReturnType<typeof listOwnerInquiries>>>
+export type ListOwnerInquiriesQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary List customer inquiries
+ */
+
+export function useListOwnerInquiries<TData = Awaited<ReturnType<typeof listOwnerInquiries>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listOwnerInquiries>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListOwnerInquiriesQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getUpdateOwnerInquiryUrl = (id: number,) => {
+
+
+
+
+  return `/api/owner/inquiries/${id}`
+}
+
+/**
+ * @summary Update an inquiry status
+ */
+export const updateOwnerInquiry = async (id: number,
+    inquiryStatusUpdate: InquiryStatusUpdate, options?: Parameters<typeof customFetch>[1]): Promise<Inquiry> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<Inquiry>(getUpdateOwnerInquiryUrl(id),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(inquiryStatusUpdate)
+  }
+);}
+
+
+
+
+
+export const getUpdateOwnerInquiryMutationKey = () => ['updateOwnerInquiry'] as const;
+
+export const getUpdateOwnerInquiryMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateOwnerInquiry>>, TError,UpdateOwnerInquiryMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateOwnerInquiry>>, TError,UpdateOwnerInquiryMutationVariables, TContext> => {
+
+const mutationKey = getUpdateOwnerInquiryMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateOwnerInquiry>>, UpdateOwnerInquiryMutationVariables> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  updateOwnerInquiry(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateOwnerInquiryMutationResult = NonNullable<Awaited<ReturnType<typeof updateOwnerInquiry>>>
+    export type UpdateOwnerInquiryMutationBody = BodyType<InquiryStatusUpdate>
+    export type UpdateOwnerInquiryMutationError = ErrorType<unknown>
+    export type UpdateOwnerInquiryMutationVariables = {id: number;data: BodyType<InquiryStatusUpdate>}
+
+    /**
+ * @summary Update an inquiry status
+ */
+export const useUpdateOwnerInquiry = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateOwnerInquiry>>, TError,UpdateOwnerInquiryMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateOwnerInquiry>>,
+        TError,
+        UpdateOwnerInquiryMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateOwnerInquiryMutationOptions(options));
     }
 

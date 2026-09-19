@@ -32,6 +32,8 @@ export const menuItemsTable = pgTable("menu_items", {
   price: numeric("price", { precision: 10, scale: 2 }).notNull(),
   currency: varchar("currency", { length: 8 }).notNull().default("ETB"),
   featured: integer("featured").notNull().default(0),
+  status: varchar("status", { length: 20 }).notNull().default("draft"),
+  dietaryLabels: jsonb("dietary_labels").$type<string[]>().notNull().default([]),
 });
 
 export const reservationsTable = pgTable("reservations", {
