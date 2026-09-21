@@ -1,2 +1,3 @@
 User-agent: *
 Allow: /
+Sitemap: https://corner-cafe-website--abduwork123.replit.app/sitemap.xml
