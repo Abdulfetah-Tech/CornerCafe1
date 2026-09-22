@@ -14,6 +14,8 @@ const fallbackProfile = {
   description: 'A little table in Sheger city for slow mornings, full plates, and conversations that run long.',
   address: 'Sheger city, Ethiopia',
   mapUrl: '#',
+  heroImageUrl: 'https://lh3.googleusercontent.com/grass-cs/ACvplmMSufzx2tLHCl1hCbEMfLSIGNSEhlU1R36clfv0pSR3OFOIC94_pKgJe64Fauh6mWBcgVoMayD_gGX6W-W2VEvJHUhBkIrbAkBHqK9OH7wko1C7Ld_WowCHsayykb8ZSrP5w_nwVF83Lxnf=w408-h544-k-no',
+  heroImageAlt: 'Corner Cafe pastry display and floral arrangement',
 };
 
 function formatPrice(price: number, currency: string) {
@@ -65,14 +67,29 @@ export default function HomePage() {
             </div>
           </div>
           <div className="relative min-h-[320px] rise-in delay-2 lg:min-h-[440px]">
-            <div className="absolute right-[12%] top-[8%] h-40 w-40 rounded-full bg-accent sm:h-56 sm:w-56" />
-            <div className="absolute right-[17%] top-[14%] h-28 w-28 rounded-full border border-secondary-foreground/40 sm:h-40 sm:w-40" />
-            <div className="absolute bottom-[8%] left-[7%] h-40 w-52 rotate-[-8deg] rounded-[42%_58%_52%_48%] border-2 border-accent/80 sm:h-56 sm:w-72" />
+            <div className="absolute right-[4%] top-[3%] h-[88%] w-[69%] rotate-[4deg] rounded-[2rem] border-8 border-secondary-foreground/90 bg-secondary-foreground/10 p-2 shadow-2xl sm:w-[62%]">
+              {profile.heroImageUrl ? (
+                <img
+                  src={profile.heroImageUrl}
+                  alt={profile.heroImageAlt || 'Corner Cafe'}
+                  className="h-full w-full rounded-[1.35rem] object-cover"
+                  width="408"
+                  height="544"
+                  loading="eager"
+                  referrerPolicy="no-referrer"
+                  data-testid="img-home-hero"
+                />
+              ) : (
+                <div className="grid h-full place-items-center rounded-[1.35rem] bg-primary/30 p-8 text-center font-display text-3xl font-bold text-secondary-foreground">
+                  A table worth walking to.
+                </div>
+              )}
+            </div>
+            <div className="absolute bottom-[12%] left-[1%] max-w-[170px] rotate-[-8deg] font-display text-2xl font-semibold leading-tight text-secondary-foreground/90 sm:text-3xl">
+              Made for your usual.
+            </div>
             <div className="absolute bottom-0 right-0 w-4/5 border-t border-secondary-foreground/30 pt-4 font-mono-ui text-[10px] uppercase tracking-[0.18em] text-secondary-foreground/65">
               Morning light / midday plates / evening stories
-            </div>
-            <div className="absolute bottom-[24%] left-[13%] max-w-[170px] rotate-[-8deg] font-display text-2xl font-semibold leading-tight text-secondary-foreground/90 sm:text-3xl">
-              Made for your usual.
             </div>
           </div>
         </div>
@@ -147,6 +164,22 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {profile.heroImageUrl && (
+        <section className="mx-auto grid max-w-6xl gap-8 px-5 py-16 sm:px-8 sm:py-24 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+          <div className="overflow-hidden rounded-3xl border border-foreground/10 bg-card shadow-[0_18px_45px_hsl(229_31%_17%_/_0.08)]">
+            <img src={profile.heroImageUrl} alt={profile.heroImageAlt || 'Corner Cafe'} className="aspect-[4/3] w-full object-cover" width="408" height="544" loading="lazy" referrerPolicy="no-referrer" data-testid="img-home-story" />
+          </div>
+          <div>
+            <SectionLabel>A look inside</SectionLabel>
+            <h2 className="mt-4 max-w-lg font-display text-4xl font-bold leading-tight sm:text-5xl">A real corner for the good part of the day.</h2>
+            <p className="mt-5 max-w-md text-sm leading-7 text-muted-foreground">See the counter, find your way here, and make a plan for the next plate.</p>
+            <Link href="/about" className="mt-7 inline-flex items-center gap-2 text-sm font-bold text-primary underline decoration-secondary decoration-2 underline-offset-4 hover:text-secondary" data-testid="link-home-photo-about">
+              See the cafe <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </section>
+      )}
 
       <section className="mx-auto grid max-w-6xl gap-8 px-5 py-20 sm:px-8 sm:py-28 lg:grid-cols-[1fr_0.8fr]">
         <div className="rounded-3xl border border-foreground/10 bg-card p-7 sm:p-10">

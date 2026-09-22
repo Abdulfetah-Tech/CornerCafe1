@@ -310,6 +310,11 @@ components:
           type: ["string", "null"]
         instagramUrl:
           type: ["string", "null"]
+        heroImageUrl:
+          type: ["string", "null"]
+          format: uri
+        heroImageAlt:
+          type: ["string", "null"]
         hours:
           type: array
           items:
@@ -323,6 +328,8 @@ components:
         - phone
         - email
         - instagramUrl
+        - heroImageUrl
+        - heroImageAlt
         - hours
     MenuItem:
       type: object
@@ -376,11 +383,16 @@ components:
         instagramUrl:
           type: ["string", "null"]
           format: uri
+        heroImageUrl:
+          type: ["string", "null"]
+          format: uri
+        heroImageAlt:
+          type: ["string", "null"]
         hours:
           type: array
           items:
             $ref: "#/components/schemas/CafeHour"
-      required: [name, tagline, description, address, mapUrl, phone, email, instagramUrl, hours]
+      required: [name, tagline, description, address, mapUrl, phone, email, instagramUrl, heroImageUrl, heroImageAlt, hours]
     MenuItemInput:
       type: object
       properties:

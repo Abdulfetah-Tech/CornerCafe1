@@ -32,6 +32,17 @@ export default function AboutPage() {
               </div>
             </section>
 
+            {profile.heroImageUrl && (
+              <section className="grid gap-8 border-b border-foreground/10 py-16 sm:py-24 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+                <img src={profile.heroImageUrl} alt={profile.heroImageAlt || 'Corner Cafe'} className="aspect-[4/3] w-full rounded-3xl object-cover" width="408" height="544" loading="lazy" referrerPolicy="no-referrer" data-testid="img-about-cafe" />
+                <div>
+                  <SectionLabel>From the cafe</SectionLabel>
+                  <h2 className="mt-4 font-display text-4xl font-bold leading-tight">See what is waiting at the counter.</h2>
+                  <p className="mt-4 text-sm leading-7 text-muted-foreground">The listing photo gives you a first look. Come by and make the corner yours.</p>
+                </div>
+              </section>
+            )}
+
             <section className="grid gap-10 py-16 sm:py-24 lg:grid-cols-[1fr_0.8fr] lg:gap-24">
               <div>
                 <SectionLabel>Plan your visit</SectionLabel>

@@ -21,6 +21,8 @@ export const cafeProfileTable = pgTable("cafe_profile", {
   phone: varchar("phone", { length: 40 }),
   email: varchar("email", { length: 160 }),
   instagramUrl: text("instagram_url"),
+  heroImageUrl: text("hero_image_url"),
+  heroImageAlt: text("hero_image_alt"),
   hours: jsonb("hours").$type<Array<{ day: string; hours: string }>>().notNull(),
 });
 

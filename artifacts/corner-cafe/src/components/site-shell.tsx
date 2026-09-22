@@ -17,6 +17,8 @@ const fallbackProfile = {
   phone: null,
   email: null,
   instagramUrl: null,
+  heroImageUrl: null,
+  heroImageAlt: null,
   hours: [],
 };
 

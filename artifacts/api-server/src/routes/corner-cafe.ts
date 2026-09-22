@@ -55,6 +55,8 @@ const mapProfile = (profile: typeof cafeProfileTable.$inferSelect) =>
     phone: profile.phone,
     email: profile.email,
     instagramUrl: profile.instagramUrl,
+    heroImageUrl: profile.heroImageUrl,
+    heroImageAlt: profile.heroImageAlt,
     hours: profile.hours,
   });
 
@@ -201,6 +203,8 @@ router.patch("/owner/cafe", async (req, res, next) => {
         phone: input.phone?.trim() || null,
         email: input.email?.trim() || null,
         instagramUrl: input.instagramUrl?.trim() || null,
+        heroImageUrl: input.heroImageUrl?.trim() || null,
+        heroImageAlt: input.heroImageAlt?.trim() || null,
         hours: input.hours,
       })
       .where(eq(cafeProfileTable.id, 1))
